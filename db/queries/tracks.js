@@ -25,7 +25,7 @@ export async function getTracks() {
   return tracks;
 }
 
-export async function getTracksById(id) {
+export async function getTrackById(id) {
   const sql = `
     SELECT *
     FROM tracks
