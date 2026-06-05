@@ -6,5 +6,5 @@ await db.end();
 console.log("🌱 Database seeded.");
 
 async function seed() {
-  // TODO
+  for (let i = 0; i < 10; i++) {}
 }
