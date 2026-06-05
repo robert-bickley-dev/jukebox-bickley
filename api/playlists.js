@@ -17,16 +17,18 @@ router.get("/", async (req, res) => {
 
 router.post("/", async (req, res) => {
   if (!req.body) return res.status(400).send("Request must have a body");
+
   const { name, description } = req.body;
   if (!name || !description)
     return res.status(400).send("Request requires name and description");
+
   const playlist = await createPlaylist(name, description);
   res.status(201).send(playlist);
 });
 
 router.param("id", async (req, res, next, id) => {
   const playlist = await getPlaylistById(id);
-  if (!playlist) res.status(404).send("Playlist not found");
+  if (!playlist) return res.status(404).send("Playlist not found");
 
   req.playlist = playlist;
   next();

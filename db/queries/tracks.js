@@ -43,7 +43,7 @@ export async function getTracksByPlaylistId(id) {
   SELECT tracks.*
   FROM 
     tracks
-    JOIN playlists_tracks ON playlists_tracks.track_id = tracks_id
+    JOIN playlists_tracks ON playlists_tracks.track_id = tracks.id
     JOIN playlists ON playlists.id = playlists_tracks.playlist_id
   WHERE playlists.id = $1
   `;
