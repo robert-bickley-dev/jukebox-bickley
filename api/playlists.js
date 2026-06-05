@@ -8,6 +8,8 @@ import {
   getPlaylistById,
 } from "#db/queries/playlists";
 
+import { getTracksByPlaylistId } from "#db/queries/tracks";
+
 router.get("/", async (req, res) => {
   const playlists = await getPlaylists();
   res.send(playlists);
@@ -22,8 +24,19 @@ router.post("/", async (req, res) => {
   res.status(201).send(playlist);
 });
 
-router.get("/:id", async (req, res) => {
-  const playlist = await getPlaylistById(req.params.id);
+router.param("id", async (req, res, next, id) => {
+  const playlist = await getPlaylistById(id);
   if (!playlist) res.status(404).send("Playlist not found");
-  res.send(playlist);
+
+  req.playlist = playlist;
+  next();
+});
+
+router.get("/:id", async (req, res) => {
+  res.send(req.playlist);
+});
+
+router.get("/:id/tracks", async (req, res) => {
+  const tracks = await getTracksByPlaylistId(req.playlist.id);
+  res.send(tracks);
 });
