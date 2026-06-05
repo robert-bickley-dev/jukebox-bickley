@@ -2,7 +2,11 @@ import express from "express";
 const router = express.Router();
 export default router;
 
-import { getPlaylists, createPlaylist } from "#db/queries/playlists";
+import {
+  getPlaylists,
+  createPlaylist,
+  getPlaylistById,
+} from "#db/queries/playlists";
 
 router.get("/", async (req, res) => {
   const playlists = await getPlaylists();
@@ -15,5 +19,11 @@ router.post("/", async (req, res) => {
   if (!name || !description)
     return res.status(400).send("Request requires name and description");
   const playlist = await createPlaylist(name, description);
+  res.status(201).send(playlist);
+});
+
+router.get("/:id", async (req, res) => {
+  const playlist = await getPlaylistById(req.params.id);
+  if (!playlist) res.status(404).send("Playlist not found");
   res.send(playlist);
 });
